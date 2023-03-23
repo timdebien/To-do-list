@@ -1,4 +1,4 @@
-const deleteBtn = document.querySelectorAll('.del')
+const deleteBtn = document.querySelectorAll('.fa-trash')
 const todoItem = document.querySelectorAll('span.not')
 const todoComplete = document.querySelectorAll('span.completed')
 
