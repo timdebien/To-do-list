@@ -17,6 +17,22 @@ body{
     background: white;
 }
 
+.doit{
+    color: red;
+    font-size: 40px;
+}
+div{
+    /* text-align: center; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+ul{
+    /* width: 60%; */
+    /* display: inline-block; */
+    text-align: left;
+}
+
 h1{
     text-align: center;
     padding-top: 15px;
@@ -35,8 +51,8 @@ h4{
 
 form{
 width: 300px;
-margin-left: 20px;
-    
+/* margin-left: 20px; */
+display: inline-block;
 }
 form label{
     display: flex;
@@ -79,4 +95,9 @@ p{
 
 #date{
     color:blue;
+    /* text-align: right; */
+}
+
+a{
+    display: float;
 }
