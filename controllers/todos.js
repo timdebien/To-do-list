@@ -4,7 +4,7 @@ module.exports = {
     getTodos: async (req,res)=>{
         console.log(req.user)
         try{
-            const todoItems = await Todo.find({userId:req.user.id})
+            const todoItems = await Todo.find({userId:req.user.id}).sort({"index":1})
             //const todoDate = await Todo.find({})
             const itemsLeft = await Todo.countDocuments({userId:req.user.id,completed: false})
             res.render('todos.ejs', {todos: todoItems, left: itemsLeft, user: req.user})
@@ -26,7 +26,7 @@ module.exports = {
                         }
             let index = 0;
             try{
-                const sortedCollection = await Todo.find({userId:req.user.id}).sort({"index":-1})
+                const sortedCollection = await Todo.find({userId:req.user.id}).sort({"index":1})
                 const maxIndex = await sortedCollection.length;
                 if(maxIndex){
                     index = maxIndex;
@@ -70,6 +70,27 @@ module.exports = {
             await Todo.findOneAndDelete({_id:req.body.todoIdFromJSFile})
             console.log('Deleted Todo')
             res.json('Deleted It')
+        }catch(err){
+            console.log(err)
+        }
+    },
+
+    moveUpList: async (req, res)=>{
+        try{
+            const taskMoveUp = await Todo.find({_id:req.body.todoIdFromJSFile});
+            let currentIndex = await taskMoveUp[0].index
+            console.log(taskMoveUp,currentIndex)
+            //const taskMoveDown = await Todo.find({index:currentIndex-1});
+            if(currentIndex && currentIndex != 0){
+                await Todo.findOneAndUpdate({index: currentIndex-1},{
+                    index: currentIndex
+                })
+                await Todo.findOneAndUpdate({_id:req.body.todoIdFromJSFile},{
+                    index: currentIndex-1
+                })
+            }
+            console.log('Moved Up List')
+            res.json('Moved Up List')
         }catch(err){
             console.log(err)
         }

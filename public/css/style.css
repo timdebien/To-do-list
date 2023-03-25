@@ -31,6 +31,7 @@ ul{
     /* width: 60%; */
     /* display: inline-block; */
     text-align: left;
+    list-style: none;
 }
 
 h1{
