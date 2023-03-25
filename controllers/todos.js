@@ -1,10 +1,11 @@
-const Todo = require('../models/Todo')
+const Todo = require('../models/Todo')//imports Model for toDoSchema
 
 module.exports = {
     getTodos: async (req,res)=>{
         console.log(req.user)
         try{
             const todoItems = await Todo.find({userId:req.user.id})
+            //const todoDate = await Todo.find({})
             const itemsLeft = await Todo.countDocuments({userId:req.user.id,completed: false})
             res.render('todos.ejs', {todos: todoItems, left: itemsLeft, user: req.user})
         }catch(err){
@@ -13,7 +14,18 @@ module.exports = {
     },
     createTodo: async (req, res)=>{
         try{
-            await Todo.create({todo: req.body.todoItem, completed: false, userId: req.user.id})
+            const date = new Date()
+            const days = {
+                            0 : 'Sunday',
+                            1 : 'Monday',
+                            2 : 'Tuesday',
+                            3 : 'Wednesday',
+                            4 : 'Thursday',
+                            5 : 'Friday',
+                            6 : 'Saturday'
+                        }
+            let dateStr = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()} ${days[date.getDay()]} ${date.getHours()}:${date.getMinutes()}`
+            await Todo.create({todo: req.body.todoItem,date: dateStr, completed: false, userId: req.user.id})
             console.log('Todo has been added!')
             res.redirect('/todos')
         }catch(err){

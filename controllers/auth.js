@@ -1,6 +1,6 @@
 const passport = require('passport')
 const validator = require('validator')
-const User = require('../models/User')
+const User = require('../models/User')//module returns a model for UserSchema
 
  exports.getLogin = (req, res) => {
     if (req.user) {
