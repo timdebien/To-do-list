@@ -24,8 +24,18 @@ module.exports = {
                             5 : 'Friday',
                             6 : 'Saturday'
                         }
+            let index = 0;
+            try{
+                const sortedCollection = await Todo.find({userId:req.user.id}).sort({"index":-1})
+                const maxIndex = await sortedCollection.length;
+                if(maxIndex){
+                    index = maxIndex;
+                }
+            }catch(err){
+                console.log(err)
+            }           
             let dateStr = `${date.getMonth()+1}/${date.getDate()}/${date.getFullYear()} ${days[date.getDay()]} ${date.getHours()}:${date.getMinutes()}`
-            await Todo.create({todo: req.body.todoItem,date: dateStr, completed: false, userId: req.user.id})
+            await Todo.create({todo: req.body.todoItem,date: dateStr, index: index,completed: false, userId: req.user.id})
             console.log('Todo has been added!')
             res.redirect('/todos')
         }catch(err){
