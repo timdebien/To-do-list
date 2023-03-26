@@ -1,9 +1,13 @@
 const deleteBtn = document.querySelectorAll('.fa-trash')
+const arrowBtn = document.querySelectorAll('.fa-arrow-up')
 const todoItem = document.querySelectorAll('span.not')
 const todoComplete = document.querySelectorAll('span.completed')
 
 Array.from(deleteBtn).forEach((el)=>{
     el.addEventListener('click', deleteTodo)
+})
+Array.from(arrowBtn).forEach((el)=>{
+    el.addEventListener('click', moveUpList)
 })
 
 Array.from(todoItem).forEach((el)=>{
@@ -13,6 +17,7 @@ Array.from(todoItem).forEach((el)=>{
 Array.from(todoComplete).forEach((el)=>{
     el.addEventListener('click', markIncomplete)
 })
+
 
 async function deleteTodo(){
     const todoId = this.parentNode.dataset.id
@@ -54,6 +59,24 @@ async function markIncomplete(){
     const todoId = this.parentNode.dataset.id
     try{
         const response = await fetch('todos/markIncomplete', {
+            method: 'put',
+            headers: {'Content-type': 'application/json'},
+            body: JSON.stringify({
+                'todoIdFromJSFile': todoId
+            })
+        })
+        const data = await response.json()
+        console.log(data)
+        location.reload()
+    }catch(err){
+        console.log(err)
+    }
+}
+
+async function moveUpList(){
+    const todoId = this.parentNode.dataset.id
+    try{
+        const response = await fetch('todos/moveUpList', {
             method: 'put',
             headers: {'Content-type': 'application/json'},
             body: JSON.stringify({
